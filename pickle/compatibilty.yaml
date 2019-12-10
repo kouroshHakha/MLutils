@@ -1,0 +1,4 @@
+import_as:
+  buffer: optnet.data.buffer
+from_import:
+  CEM: optnet.alg.cross_entropy.cem_optim.CEM
