@@ -3,6 +3,7 @@ from typing import Any, Union
 from pathlib import Path
 
 from ruamel.yaml import YAML
+import pickle
 
 yaml = YAML(typ='unsafe')
 
@@ -74,3 +75,49 @@ def get_full_name(name: str, prefix: str = '', suffix: str = ''):
     if suffix:
         name = f'{name}_{suffix}'
     return name
+
+def read_pickle(fname: Union[str, Path]) -> Any:
+    """Read the given file using Pickle.
+
+    Parameters
+    ----------
+    fname : str
+        the file name.
+
+    Returns
+    -------
+    content : Any
+        the object returned by pickle.
+    """
+    with open(fname, 'rb') as f:
+        content = pickle.load(f)
+
+    return content
+
+def write_pickle(fname: Union[str, Path], obj: object, mkdir: bool = True) -> None:
+    """Writes the given object to a file using pickle format.
+
+    Parameters
+    ----------
+    fname : Union[str, Path]
+        the file name.
+    obj : object
+        the object to write.
+    mkdir : bool
+        If True, will create parent directories if they don't exist.
+
+    Returns
+    -------
+    content : Any
+        the object returned by pickle.
+    """
+    if isinstance(fname, str):
+        fpath = Path(fname)
+    else:
+        fpath = fname
+
+    if mkdir:
+        fpath.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(fpath, 'wb') as f:
+        pickle.dump(obj, f)
