@@ -1,5 +1,7 @@
 
 import matplotlib.pyplot as plt
+import torch.nn as nn
+import torch
 
 def plot_grad_flow(named_parameters):
     ave_grads = []
@@ -16,3 +18,15 @@ def plot_grad_flow(named_parameters):
     plt.ylabel("average gradient")
     plt.title("Gradient flow")
     plt.grid(True)
+
+def get_l1_reg(model: nn.Module):
+    regularization_loss = 0
+    for param in model.parameters():
+        regularization_loss += torch.sum(torch.abs(param))
+    return regularization_loss
+
+def get_l2_reg(model: nn.Module):
+    regularization_loss = 0
+    for param in model.parameters():
+        regularization_loss += torch.sum(torch.abs(param)**2)
+    return regularization_loss
