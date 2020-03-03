@@ -7,6 +7,8 @@ from utils.immutable import combine_hash, to_immutable
 
 T = TypeVar('T')
 
+from bb_eval_engine.data.design import Design
+
 class Database:
     """
     This is a database of hashable objects. It will keep track of the frequency and uniqueness of
@@ -27,6 +29,7 @@ class Database:
         self._freq_dict: OrderedDict[T, int] = OrderedDict()
         self._list: Dict[datetime, T] = {}
         self._rlist: Dict[T, datetime] = {}
+        self._tot_freq = 0
 
     def add(self, dsn: object):
         dt =  datetime.utcnow()
@@ -42,6 +45,8 @@ class Database:
             self._rlist[dsn] = dt
             self._list[dt] = dsn
             self._freq_dict[dsn] = 1
+
+        self._tot_freq += 1
 
     def extend(self, designs: Sequence[object]):
         for dsn in designs:
@@ -97,7 +102,7 @@ class Database:
 
     @property
     def tot_freq(self):
-        return sum(self._freq_dict.values())
+        return self._tot_freq
 
 
 
