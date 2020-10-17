@@ -5,7 +5,7 @@ from pathlib import Path
 from ruamel.yaml import YAML
 import pickle
 
-yaml = YAML(typ='unsafe')
+yaml = YAML(typ='safe')
 
 def read_yaml(fname: Union[str, Path]) -> Any:
     """Read the given file using YAML.
